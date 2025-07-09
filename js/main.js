@@ -68,6 +68,7 @@ function reset_game() {
 }
 
 function main() {
+  console.log('Snake Game Started');
   document.addEventListener('keydown', changer_direction);
   document.getElementById('restart').addEventListener('click', reset_game);
   setInterval(boucle, 150);

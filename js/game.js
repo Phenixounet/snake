@@ -54,4 +54,4 @@ function collision_handler(tete, snake, cell_count) {
   return false;
 }
 
-export { creer_nourriture, avancer_snake, verifie_collision };
+export { create_food, snake_move, collision_handler };
