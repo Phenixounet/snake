@@ -1,0 +1,57 @@
+/*
+** game.js
+** game logic
+*/
+
+function creer_nourriture(cell_count, snake) {
+  let nouvelle;
+  let valide = false;
+
+  while (!valide) {
+    nouvelle = {
+      x: Math.floor(Math.random() * cell_count),
+      y: Math.floor(Math.random() * cell_count)
+    };
+
+    let i = 0;
+    valide = true;
+    while (i < snake.length) {
+      if (snake[i].x === nouvelle.x && snake[i].y === nouvelle.y)
+        valide = false;
+      i = i + 1;
+    }
+  }
+  return nouvelle;
+}
+
+function avancer_snake(snake, direction) {
+  const tete = { x: snake[0].x, y: snake[0].y };
+
+  if (direction === 'haut')
+    tete.y = tete.y - 1;
+  else if (direction === 'bas')
+    tete.y = tete.y + 1;
+  else if (direction === 'gauche')
+    tete.x = tete.x - 1;
+  else if (direction === 'droite')
+    tete.x = tete.x + 1;
+
+  snake.unshift(tete);
+  return tete;
+}
+
+function verifie_collision(tete, snake, cell_count) {
+  if (tete.x < 0 || tete.x >= cell_count ||
+      tete.y < 0 || tete.y >= cell_count)
+    return true;
+
+  let i = 1;
+  while (i < snake.length) {
+    if (tete.x === snake[i].x && tete.y === snake[i].y)
+      return true;
+    i = i + 1;
+  }
+  return false;
+}
+
+export { creer_nourriture, avancer_snake, verifie_collision };
