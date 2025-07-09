@@ -4,7 +4,7 @@
 */
 
 import { clear_canvas, draw_snake, draw_food } from './draw.js';
-import { creer_nourriture, avancer_snake, verifie_collision } from './game.js';
+import { create_food, snake_move, collision_handler } from './game.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -13,37 +13,37 @@ const cell_count = canvas.width / cell_size;
 
 let snake = [ { x: 10, y: 10 } ];
 let direction = 'droite';
-let nourriture = creer_nourriture(cell_count, snake);
+let nourriture = create_food(cell_count, snake);
 let en_vie = true;
 let score = 0;
 
-function changer_direction(event) {
+function direction_handler(event) {
   const key = event.key;
 
-  if (key === 'ArrowUp' && direction !== 'bas')
-    direction = 'haut';
-  else if (key === 'ArrowDown' && direction !== 'haut')
-    direction = 'bas';
-  else if (key === 'ArrowLeft' && direction !== 'droite')
-    direction = 'gauche';
-  else if (key === 'ArrowRight' && direction !== 'gauche')
-    direction = 'droite';
+  if (key === 'ArrowUp' && direction !== 'down')
+    direction = 'up';
+  else if (key === 'ArrowDown' && direction !== 'up')
+    direction = 'down';
+  else if (key === 'ArrowLeft' && direction !== 'right')
+    direction = 'left';
+  else if (key === 'ArrowRight' && direction !== 'left')
+    direction = 'right';
 }
 
 function boucle() {
   if (!en_vie)
     return;
 
-  const tete = avancer_snake(snake, direction);
+  const tete = snake_move(snake, direction);
 
   if (tete.x === nourriture.x && tete.y === nourriture.y) {
     score = score + 1;
-    nourriture = creer_nourriture(cell_count, snake);
+    nourriture = create_food(cell_count, snake);
   }
   else
     snake.pop();
 
-  if (verifie_collision(tete, snake, cell_count)) {
+  if (collision_handler(tete, snake, cell_count)) {
     en_vie = false;
     alert('Game Over');
     document.getElementById('restart').style.display = 'inline-block';
@@ -59,8 +59,8 @@ function boucle() {
 
 function reset_game() {
   snake = [ { x: 10, y: 10 } ];
-  direction = 'droite';
-  nourriture = creer_nourriture(cell_count, snake);
+  direction = 'right';
+  nourriture = create_food(cell_count, snake);
   en_vie = true;
   score = 0;
   document.getElementById('score').textContent = "Score : 0";
