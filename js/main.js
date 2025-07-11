@@ -13,8 +13,8 @@ const cell_count = canvas.width / cell_size;
 
 let snake = [ { x: 10, y: 10 } ];
 let direction = 'droite';
-let nourriture = create_food(cell_count, snake);
-let en_vie = true;
+let food = create_food(cell_count, snake);
+let alive = true;
 let score = 0;
 
 function direction_handler(event) {
@@ -30,21 +30,21 @@ function direction_handler(event) {
     direction = 'right';
 }
 
-function boucle() {
-  if (!en_vie)
+function game_loop() {
+  if (!alive)
     return;
 
   const tete = snake_move(snake, direction);
 
-  if (tete.x === nourriture.x && tete.y === nourriture.y) {
+  if (tete.x === food.x && tete.y === food.y) {
     score = score + 1;
-    nourriture = create_food(cell_count, snake);
+    food = create_food(cell_count, snake);
   }
   else
     snake.pop();
 
   if (collision_handler(tete, snake, cell_count)) {
-    en_vie = false;
+    alive = false;
     alert('Game Over');
     document.getElementById('restart').style.display = 'inline-block';
     return;
@@ -54,24 +54,23 @@ function boucle() {
 
   clear_canvas(ctx, canvas, cell_size);
   draw_snake(ctx, snake, cell_size);
-  draw_food(ctx, nourriture, cell_size);
+  draw_food(ctx, food, cell_size);
 }
 
 function reset_game() {
   snake = [ { x: 10, y: 10 } ];
   direction = 'right';
-  nourriture = create_food(cell_count, snake);
-  en_vie = true;
+  food = create_food(cell_count, snake);
+  alive = true;
   score = 0;
   document.getElementById('score').textContent = "Score : 0";
   document.getElementById('restart').style.display = 'none';
 }
 
 function main() {
-  console.log('Snake Game Started');
-  document.addEventListener('keydown', changer_direction);
+  document.addEventListener('keydown', direction_handler);
   document.getElementById('restart').addEventListener('click', reset_game);
-  setInterval(boucle, 150);
+  setInterval(game_loop, 150);
 }
 
 main();
