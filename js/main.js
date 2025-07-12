@@ -18,6 +18,8 @@ let alive = true;
 let score = 0;
 let pending_dir = "droite";
 
+// test
+
 function direction_handler(event) {
   const key = event.key;
 
