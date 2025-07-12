@@ -16,6 +16,7 @@ let direction = 'droite';
 let food = create_food(cell_count, snake);
 let alive = true;
 let score = 0;
+let pending_dir = "droite";
 
 function direction_handler(event) {
   const key = event.key;
@@ -59,7 +60,7 @@ function game_loop() {
 
 function reset_game() {
   snake = [ { x: 10, y: 10 } ];
-  direction = 'right';
+  direction = pending_dir;
   food = create_food(cell_count, snake);
   alive = true;
   score = 0;
